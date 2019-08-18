@@ -59,6 +59,10 @@ elif 'RDS_DB_NAME' in os.environ:
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ADMIN_USER_EMAIL = config('ADMIN_USER_EMAIL')
+
+SITE_ID=1
+
 
 # Application definition
 
@@ -71,13 +75,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_extensions',
+    
     # local app
     'favorite_things',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -86,6 +93,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    '127.0.0.1:3000', 'localhost:5000'
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://127.0.0.1:3000','http://localhost:5000'
+]
 
 TEMPLATES = [
     {

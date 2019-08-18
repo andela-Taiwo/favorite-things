@@ -1,6 +1,15 @@
 import React from "react";
 import { render } from "react-dom";
+import { Provider } from "react-redux";
+import "babel-polyfill";
 
-import App from "./app";
+import { store } from "./helpers";
+import { App } from "./App";
+import "./index.css";
 
-render(<App />, document.getElementById("app"));
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
