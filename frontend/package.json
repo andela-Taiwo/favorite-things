@@ -1,0 +1,88 @@
+{
+  "name": "favorite-things",
+  "version": "1.0.0",
+  "description": "An app that helps user track their favorite things",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open --port 5000",
+    "build": "webpack --mode production",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint  \"**/*.{js, jsx} \" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-Taiwo/favorite-things.git"
+  },
+  "author": "Sokunbi Taiwo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-Taiwo/andela-Taiwo/favorite-things/issues"
+  },
+  "homepage": "https://github.com/andela-Taiwo/favorite-things#readme",
+  "postcss": {
+    "map": false,
+    "plugins": {
+      "postcss-plugin": {}
+    }
+  },
+  "devDependencies": {
+    "@babel/node": "^7.2.2",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.3",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "file-loader": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "postcss-load-config": "^2.0.0",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^1.17.0",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/runtime": "^7.4.3",
+    "@reach/router": "^1.2.1",
+    "axios": "^0.18.0",
+    "babel-plugin-import": "^1.11.0",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "css-loader": "^2.1.0",
+    "express": "^4.16.4",
+    "history": "^4.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "moment": "^2.24.0",
+    "node-sass": "^4.11.0",
+    "postcss-plugin": "^1.0.0",
+    "react": "^16.8.4",
+    "react-datetime": "^2.16.3",
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.4.0-beta.8",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.0.2",
+    "redux-thunk": "^2.2.0",
+    "style-loader": "^0.23.1",
+    "sugarss": "^2.0.0",
+    "webpack-dev-middleware": "^3.6.0",
+    "webpack-hot-middleware": "^2.24.3"
+  }
+}
