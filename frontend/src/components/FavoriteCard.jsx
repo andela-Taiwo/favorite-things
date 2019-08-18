@@ -25,7 +25,7 @@ export class FavoriteCard extends React.Component {
 
   render() {
     const favorites =
-      (this.props &&
+      (this.props && this.props.props && this.props.props.favorites &&
         this.props.props.favorites.map(favorite => {
           return (
             <Col key={favorite.title} span={8}>
