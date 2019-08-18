@@ -129,4 +129,3 @@ class TestFavoriteAPI(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_data['ranking'], 1)
         self.assertEqual(updated_favorite.ranking, 2)
-
