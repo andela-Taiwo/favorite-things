@@ -21,7 +21,7 @@ function getAllFavorites() {
       url: `${config.apiUrl}/favorite/`,
       mode: "no-cors",
       headers: authHeader()
-      // 'Content-Type': 'application/json',
+
     })
     .then(response => {
       if (response.status !== 200) {
@@ -42,7 +42,32 @@ function getAllFavorites() {
     });
 }
 
-function createFavorite() {}
+function createFavorite(data) {
+
+    return axios
+    .request({
+      method: "post",
+      url: `${config.apiUrl}/favorite/`,
+      mode: "no-cors",
+      data: data,
+      headers: authHeader()
+      // 'Content-Type': 'application/json',
+    })
+    .then(response => {
+      if (response.status == 200) {
+        return response.data.payload;
+      }
+      location.reload(true);
+      return response.data.error;
+    })
+    .catch(error => {
+      const err = error.response.data;
+      for (var key in err) {
+        if (err.hasOwnProperty(key)) {
+          return Promise.reject(`${key} is required`);
+        }
+      }})
+}
 
 function getFavorite() {}
 

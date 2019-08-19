@@ -59,7 +59,8 @@ class FavoritePage extends React.Component {
     this.setState({ submitted: true, confirmLoading: true });
     const { title, category, ranking, description } = this.state;
     const { dispatch } = this.props;
-    if (title & category & ranking) {
+   
+    if (title && category && ranking) {
       dispatch(
         favoriteActions.addFavorite({
           title,
