@@ -19,8 +19,6 @@ from datetime import datetime, timedelta
 from decouple import config, Csv
 from django.urls import reverse_lazy
 import dj_database_url
-# from dj_database_url import parse as db_url
-
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,31 +27,10 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':  ':memory:',
-    }
-}
-
-
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mydatabase'
-    }
-
-elif 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
     }
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -103,7 +80,7 @@ CORS_ORIGIN_WHITELIST = [
     '127.0.0.1:3000', 'localhost:5000', 'http://favorites-app.s3-website-us-east-1.amazonaws.com'
 ]
 CORS_ORIGIN_REGEX_WHITELIST = [
-    'http://localhost:5000'
+    'http://127.0.0.1:3000','http://localhost:5000'
 ]
 
 TEMPLATES = [
@@ -130,21 +107,20 @@ AUTH_USER_MODEL = 'favorite_things.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-
-# DATABASES = {'default': dj_database_url.config()}
-
-
+# DATABASES = {
+#     'default': {
+#       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': config('RD_NAME', default='favorite'),
+#         'USER': config('RD_USER', default='taiwo'),
+#         'PASSWORD': config('RD_PASSWORD', default='test'),
+#         'HOST': config('RD_HOST', default='127.0.0.1'),
+#         'PORT': 5432,
+#     }
+# }
 DATABASES = {
-    'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('RD_NAME', default='favorite'),
-        'USER': config('RD_USER', default='taiwo'),
-        'PASSWORD': config('RD_PASSWORD', default='test'),
-        'HOST': config('RD_HOST', default='localhost'),
-        'PORT': 5432,
-    }
+    'default': dj_database_url.config(
+      default = config('DATABASE_URL'))
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -194,7 +170,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-S3_BUCKET = config('S3_BUCKET')
+S3_BUCKET = config("S3_BUCKET")
 
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 

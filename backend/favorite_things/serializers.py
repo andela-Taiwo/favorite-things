@@ -21,21 +21,15 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
-class CreateFavoriteSerializer(serializers.ModelSerializer):
+class FavoriteSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     class Meta:
         model = Favorite
-        fields = [
-            'title',
-            'category',
-            'ranking',
-            'owner',
-        ]
+        fields = ('__all__')
 
 
-class FavoriteSerializer(serializers.ModelSerializer):
-
+class CreateFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = ('__all__')

@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -53,6 +54,18 @@ class User(AbstractUser):
         verbose_name_plural = "All Users"
 
 
+class ModelChangeLogsModel(models.Model):
+    user_id = models.BigIntegerField(null=False, blank=True, db_index=True) 
+    # table_name = models.CharField(max_length=132, null=False, blank=True)
+    # table_row = models.BigIntegerField(null=False, blank=True)
+    data = models.TextField(null=False, blank=True)
+    action = models.CharField(max_length=16, null=False, blank=True)  # saved or deleted
+    timestamp = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=True)
+
+    class Meta:
+        app_label = "favoite_things"
+        db_table = "model_change_logs"
+
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
     category_description = models.CharField(max_length=250)
@@ -69,7 +82,7 @@ class Favorite(models.Model):
     description = models.TextField(blank=True, null=True)
     ranking = models.PositiveIntegerField()
     owner = models.ForeignKey(User, related_name='user_favorite', on_delete=models.PROTECT, blank=True, null=True)
-    category = models.ForeignKey(related_name='favorite_category', to=Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(related_name='favorite', to=Category, on_delete=models.PROTECT, blank=True, null=True)
     created_at = models.DateField(auto_now_add=True, editable=False)
     last_modified = models.DateField(auto_now=True, editable=False)
 
@@ -88,7 +101,6 @@ class Favorite(models.Model):
             item.save()
 
     def validate_unique(self, exclude=None):
-        # import pdb; pdb.set_trace()
         qs = Favorite.objects.filter(category=self.category, ranking=self.ranking, owner=self.owner)
         if self.pk is None:   
             if qs.exists():
@@ -97,4 +109,3 @@ class Favorite(models.Model):
     def save(self, *args, **kwargs):
         self.validate_unique()
         super(Favorite, self).save(*args, **kwargs)
-

@@ -64,11 +64,10 @@ function addFavorite(data) {
 
 function updateFavorite() {}
 
-function retrieveFavorite() {
+function retrieveFavorite(favoriteId) {
     return dispatch => {
         dispatch(request());
-    
-        favoriteService.getFavorite(favorite.id).then(
+        favoriteService.getFavorite(favoriteId).then(
           favorite => {
               dispatch(success(favorite))
             //   dispatch(alertActions.success("New favorite created successfully"));

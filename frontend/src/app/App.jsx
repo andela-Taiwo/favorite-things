@@ -1,6 +1,6 @@
 import React from "react";
 // import { Router, Route } from 'react-router-dom';
-import { Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { connect } from "react-redux";
 
@@ -10,6 +10,7 @@ import { PrivateRoute } from "../routes";
 import { HomePage } from "../components/HomePage";
 import { LoginPage } from "../components/LoginPage";
 import { FavoritePage } from "../components/";
+import FavoriteDetails from '../components/FavoriteDetails';
 import { Alert } from "antd";
 import "antd/dist/antd.css";
 
@@ -42,7 +43,9 @@ class App extends React.Component {
               <Switch>
                 <Route exact path="/" component={HomePage} />
 
-                <PrivateRoute path="/favorite" component={FavoritePage} />
+                <PrivateRoute exact path="/favorite" component={FavoritePage} />
+                <PrivateRoute  exact path="/details/:id" component={FavoriteDetails} />
+
 
                 <Route path="/login" component={LoginPage} />
               </Switch>

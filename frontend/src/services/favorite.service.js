@@ -2,13 +2,10 @@ import config from "config";
 import { authHeader } from "../helpers";
 import axios from "axios";
 
-export const favoriteService = {
-  getAllFavorites,
-  createFavorite,
-  updateFavorite,
-  deleteFavorite,
-  getFavorite
-};
+const axiosInstance = axios.create({
+  baseURL: `${config.apiUrl}`,
+});
+
 
 function getAllFavorites() {
   const requestOptions = {
@@ -69,8 +66,43 @@ function createFavorite(data) {
       }})
 }
 
-function getFavorite() {}
+function getFavorite(favoriteId) {
+  console.log(favoriteId, 'in the  favorite' )
+  return axios
+  .request({
+    method: "get",
+    url: `${config.apiUrl}/favorite/${favoriteId}/`,
+    mode: "no-cors",
+    headers: authHeader()
+
+  })
+  .then(response => {
+    if (response.status !== 200) {
+      if (response.status === 401) {
+        // auto logout if 401 response returned from api
+        logout();
+        location.reload(true);
+      }
+      const data = response.statusText;
+      const error = (data && data.message) || response.statusText;
+
+      return Promise.reject(error);
+    }
+    return response.data.payload;
+  })
+  .catch(error => {
+    return error;
+  });
+}
 
 function updateFavorite() {}
 
 function deleteFavorite() {}
+
+export const favoriteService = {
+  getAllFavorites,
+  createFavorite,
+  updateFavorite,
+  deleteFavorite,
+  getFavorite
+};

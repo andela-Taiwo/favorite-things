@@ -54,7 +54,7 @@ def add_favorite(requestor, data):
             data_info['category'] = Category.objects.create(name=data_info.get('category')).pk
         favorite = deserialize_favorite(
             data=data_info,
-            serializer_class=FavoriteSerializer,
+            serializer_class=CreateFavoriteSerializer,
             favorite=favorite,
             requestor=requestor
         )
@@ -77,7 +77,7 @@ def update_favorite(requestor, data, favorite_id):
     assert(isinstance(data, dict))
     favorite = retrieve_favorite(requestor, favorite_id)
     if favorite:
-        serializer = CreateFavoriteSerializer(instance=favorite, data=data, partial=True)
+        serializer = FavoriteSerializer(instance=favorite, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         with transaction.atomic():
             serializer.save()

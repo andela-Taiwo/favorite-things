@@ -1,8 +1,8 @@
 import React from "react";
-import { Redirect } from "react-router";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
-export const PrivateRoute = ({ component: Component, ...rest }) => (
+export const PrivateRoute = ({ component: Component, ...rest }) => {
+  return (
   <Route
     {...rest}
     render={props =>
@@ -15,4 +15,4 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
       )
     }
   />
-);
+)};

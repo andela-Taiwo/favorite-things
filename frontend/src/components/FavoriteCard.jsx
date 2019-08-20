@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {Row, Col, Card } from "antd";
 import "antd/dist/antd.css";
 
@@ -8,21 +8,21 @@ export class FavoriteCard extends React.Component {
     super(props);
   }
  
-  render() {
-    
+  render() { 
     const favorites =
       (this.props && this.props.props && this.props.props.favorites &&
         this.props.props.favorites.map(favorite => {
+          const category = favorite.category ? favorite.category.name : ''
           return (
             <Link
-            to={`/details/`}
+            to={`/details/${favorite.id}`} id={favorite.id}
             >
-            <Col key={favorite.title} span={8}>
+            <Col className='favorite-card'key={favorite.id} span={8}>
               <Card key={favorite.id} title={favorite.title} bordered={true}>
-                <h3>Category: {favorite.category.name} </h3> <br />
+                <h3>Category: {category}</h3> <br />
                 <h3>Rank: {favorite.ranking} </h3>
                 <br />
-              </Card>{" "}
+              </Card>
             </Col>
             </Link>
           );

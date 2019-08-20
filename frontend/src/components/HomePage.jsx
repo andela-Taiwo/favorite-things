@@ -22,7 +22,6 @@ class HomePage extends React.Component {
             offset={6}
             style={{
               fontSize: "18x",
-              marginTop: "22%",
               textAlign: "center"
             }}
           >

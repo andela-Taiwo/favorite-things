@@ -9,4 +9,4 @@ const middleware = applyMiddleware(thunkMiddleware, loggerMiddleware);
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const store = createStore(rootReducer, composeEnhancers(middleware));
+export const store = createStore(rootReducer, compose(middleware));
