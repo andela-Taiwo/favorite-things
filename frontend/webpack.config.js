@@ -15,7 +15,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
   target: "web",
   devServer: {
-    port: 3000,
+    port: 5000,
     contentBase: "./dist",
     historyApiFallback: true
   },
@@ -24,7 +24,7 @@ module.exports = {
     vendor: ["react", "react-dom"]
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "./dist"),
     filename: "js/[name].bundle.js",
     publicPath: "/"
   },
@@ -70,7 +70,7 @@ module.exports = {
     HtmlWebpackPluginConfig,
     new webpack.NoEmitOnErrorsPlugin()
   ],
-  mode: "development",
+  mode: "production",
   externals: {
     // global app config object
     config: JSON.stringify({

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --port 5000",
     "build": "webpack --mode production",
+    "deploy": "aws s3 --region us-east-1 sync dist/ s3://favorites-app",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "eslint  \"**/*.{js, jsx} \" "
   },
@@ -34,6 +35,7 @@
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "dotenv": "^8.1.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.17.2",

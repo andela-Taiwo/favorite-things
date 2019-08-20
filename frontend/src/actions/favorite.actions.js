@@ -64,6 +64,32 @@ function addFavorite(data) {
 
 function updateFavorite() {}
 
-function retrieveFavorite() {}
+function retrieveFavorite() {
+    return dispatch => {
+        dispatch(request());
+    
+        favoriteService.getFavorite(favorite.id).then(
+          favorite => {
+              dispatch(success(favorite))
+            //   dispatch(alertActions.success("New favorite created successfully"));
+            //   location.reload(true);
+            },
+          error => {
+            dispatch(failure(error.toString()));
+            dispatch(alertActions.error(error.toString()));
+          }
+        );
+      };
+    
+      function request() {
+        return { type: favoriteConstants.GET_FAVORITE_REQUEST};
+      }
+      function success(favorite) {
+        return { type: favoriteConstants.GET_FAVORITE__SUCCESS, favorite };
+      }
+      function failure(error) {
+        return { type: favoriteConstants.GET_FAVORITE__FAILURE, error };
+      }
+}
 
 function deleteFavorite() {}

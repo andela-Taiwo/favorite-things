@@ -58,8 +58,8 @@ elif 'RDS_DB_NAME' in os.environ:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-# ADMIN_USER_EMAIL = config('ADMIN_USER_EMAIL')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ry9c19b06b.execute-api.us-east-1.amazonaws.com']
+ADMIN_USER_EMAIL = config('ADMIN_USER_EMAIL')
 
 SITE_ID=1
 
@@ -78,7 +78,10 @@ INSTALLED_APPS = [
     
     # local app
     'favorite_things',
+    ## third party apps
     'corsheaders',
+    'django_s3_storage',
+    'zappa_django_utils'
 ]
 
 MIDDLEWARE = [
@@ -97,10 +100,10 @@ ROOT_URLCONF = 'backend.urls'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    '127.0.0.1:3000', 'localhost:5000'
+    '127.0.0.1:3000', 'localhost:5000', 'http://favorites-app.s3-website-us-east-1.amazonaws.com'
 ]
 CORS_ORIGIN_REGEX_WHITELIST = [
-    'http://127.0.0.1:3000','http://localhost:5000'
+    'http://localhost:5000'
 ]
 
 TEMPLATES = [
@@ -127,9 +130,20 @@ AUTH_USER_MODEL = 'favorite_things.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # DATABASES = {'default': dj_database_url.config()}
+
+
+DATABASES = {
+    'default': {
+      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('RD_NAME', default='favorite'),
+        'USER': config('RD_USER', default='taiwo'),
+        'PASSWORD': config('RD_PASSWORD', default='test'),
+        'HOST': config('RD_HOST', default='localhost'),
+        'PORT': 5432,
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -179,3 +193,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+S3_BUCKET = config('S3_BUCKET')
+
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+
+AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET
+
+STATIC_URL = "https://%s.s3.amazonaws.com/" % S3_BUCKET
