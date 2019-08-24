@@ -7,7 +7,7 @@ from django.db.models import Q
 from rest_framework.exceptions import APIException
 from rest_framework import exceptions
 from .models import (
-    Favorite, Category, User
+    Favorite, Category, User, ModelChangeLogsModel
 )
 from django.db import (
     transaction,
@@ -52,9 +52,10 @@ def add_favorite(requestor, data):
             data_info['category'] = category[0].pk
         else:
             data_info['category'] = Category.objects.create(name=data_info.get('category')).pk
+            
         favorite = deserialize_favorite(
             data=data_info,
-            serializer_class=FavoriteSerializer,
+            serializer_class=CreateFavoriteSerializer,
             favorite=favorite,
             requestor=requestor
         )
@@ -68,6 +69,8 @@ def list_favorites(requestor):
 
 def retrieve_favorite(requestor, favorite_id):
     favorite = get_object_or_404(Favorite, id=favorite_id)
+    # history = ModelChangeLogsModel.objectfilter(user_id=requestor.id).all()
+
     if favorite.owner == requestor:
         return favorite
     else:
@@ -77,6 +80,13 @@ def update_favorite(requestor, data, favorite_id):
     assert(isinstance(data, dict))
     favorite = retrieve_favorite(requestor, favorite_id)
     if favorite:
+ 
+        if data.get('category') is not None:
+            category = Category.objects.filter(name=data.get('category'))
+            if category.exists():
+                data['category'] = category[0].pk
+            else:
+                data['category'] = Category.objects.create(name=data.get('category')).pk
         serializer = CreateFavoriteSerializer(instance=favorite, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         with transaction.atomic():

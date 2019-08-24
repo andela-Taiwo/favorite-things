@@ -1,6 +1,10 @@
 import { alertConstants } from "../constants";
-
-export function alert(state = {}, action) {
+let inititalState = {
+  type: "",
+  message: "",
+  loading: true
+};
+export function alert(state = inititalState, action) {
   switch (action.type) {
     case alertConstants.SUCCESS:
       return {

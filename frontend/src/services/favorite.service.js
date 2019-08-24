@@ -1,14 +1,10 @@
 import config from "config";
 import { authHeader } from "../helpers";
 import axios from "axios";
-
-export const favoriteService = {
-  getAllFavorites,
-  createFavorite,
-  updateFavorite,
-  deleteFavorite,
-  getFavorite
-};
+import {userService} from './'
+const axiosInstance = axios.create({
+  baseURL: `${config.apiUrl}`
+});
 
 function getAllFavorites() {
   const requestOptions = {
@@ -21,13 +17,12 @@ function getAllFavorites() {
       url: `${config.apiUrl}/favorite/`,
       mode: "no-cors",
       headers: authHeader()
-
     })
     .then(response => {
       if (response.status !== 200) {
         if (response.status === 401) {
           // auto logout if 401 response returned from api
-          logout();
+          userService.logout();
           location.reload(true);
         }
         const data = response.statusText;
@@ -43,8 +38,7 @@ function getAllFavorites() {
 }
 
 function createFavorite(data) {
-
-    return axios
+  return axios
     .request({
       method: "post",
       url: `${config.apiUrl}/favorite/`,
@@ -66,11 +60,71 @@ function createFavorite(data) {
         if (err.hasOwnProperty(key)) {
           return Promise.reject(`${key} is required`);
         }
-      }})
+      }
+    });
 }
 
-function getFavorite() {}
+function getFavorite(favoriteId) {
+  return axios
+    .request({
+      method: "get",
+      url: `${config.apiUrl}/favorite/${favoriteId}/`,
+      mode: "no-cors",
+      headers: authHeader()
+    })
+    .then(response => {
+      if (response.status !== 200) {
+        if (response.status === 401) {
+          // auto logout if 401 response returned from api
+          userService.logout();
+          location.reload(true);
+        }
+        const data = response.statusText;
+        const error = (data && data.message) || response.statusText;
 
-function updateFavorite() {}
+        return Promise.reject(error);
+      }
+      return response.data.payload;
+    })
+    .catch(error => {
+      return error;
+    });
+}
+
+function updateFavorite(favoriteId, data) {
+  return axios
+    .request({
+      method: "put",
+      url: `${config.apiUrl}/favorite/${favoriteId}/`,
+      mode: "no-cors",
+      headers: authHeader(),
+      data: data
+    })
+    .then(response => {
+      if (response.status !== 200) {
+        if (response.status === 401) {
+          // auto logout if 401 response returned from api
+          userService.logout();
+          location.reload(true);
+        }
+        const data = response.statusText;
+        const error = (data && data.message) || response.statusText;
+
+        return Promise.reject(error);
+      }
+      return response.data.payload;
+    })
+    .catch(error => {
+      return error;
+    });
+}
 
 function deleteFavorite() {}
+
+export const favoriteService = {
+  getAllFavorites,
+  createFavorite,
+  updateFavorite,
+  deleteFavorite,
+  getFavorite
+};

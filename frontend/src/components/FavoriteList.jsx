@@ -4,23 +4,18 @@ import { connect } from "react-redux";
 import { favoriteActions } from "../actions";
 import { FavoriteCard } from "./FavoriteCard";
 import Navigation from "./Navigation";
+
+import LoadingContainer from "./LoadingContainer";
 import "antd/dist/antd.css";
-import { FavoritePage } from "./FavoritePage";
 
 class FavoriteList extends React.Component {
   constructor(props) {
     super(props);
-    this.FavoriteCard = React.createRef();
   }
   componentDidMount() {
     this.props.dispatch(favoriteActions.getAllFavorites());
   }
 
-  handleShowFavorite = event => {
-    event.preventDefault();
-    const { dispatch } = this.props;
-    dispatch(favoriteActions.getFavorite(id));
-  };
   render() {
     const { favorites, loggedIn } = this.props;
     return (
@@ -30,23 +25,16 @@ class FavoriteList extends React.Component {
           style={{
             textAlign: "center",
             fontSize: "32px",
-            margin: "12px 0 12px 0"
+            margin: "12px 0 12px 0",
+            color: "#1890FF"
           }}
         >
-          {" "}
           All Favorites
         </h2>
-        {favorites.loading && <em>Loading favorites...</em>}
-        {favorites.error && (
-          <span className="text-danger">ERROR: {favorites.error}</span>
-        )}
-        {favorites.favorites && (
-          // <h1>Hello</h1>
-          <FavoriteCard
-            ref={this.FavoriteCard}
-            props={favorites}
-            handleShowFavorite={this.handleShowFavorite}
-          />
+        {favorites.loading ? (
+          <LoadingContainer backgroundColor="#000000" />
+        ) : (
+          favorites.favorites && <FavoriteCard props={favorites} />
         )}
       </div>
     );
@@ -54,8 +42,10 @@ class FavoriteList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { favorites, authentication } = state;
-  let { user, loggedIn } = authentication;
+  const {
+    favorites,
+    authentication: { loggedIn }
+  } = state;
   return {
     loggedIn,
     favorites

@@ -1,6 +1,6 @@
 import config from "config";
 import { authHeader } from "../helpers";
-import axios from "axios";
+import axios from "axios"
 
 export const userService = {
   login,
@@ -34,6 +34,7 @@ function login(email, password) {
 
 function logout() {
   // remove user from local storage to log user out
+  localStorage.removeItem("owner");
   localStorage.removeItem("user");
 }
 

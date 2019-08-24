@@ -12,10 +12,11 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: "body"
 });
 
+
 module.exports = {
   target: "web",
   devServer: {
-    port: 3000,
+    port: 5000,
     contentBase: "./dist",
     historyApiFallback: true
   },
@@ -24,9 +25,12 @@ module.exports = {
     vendor: ["react", "react-dom"]
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "./dist"),
     filename: "js/[name].bundle.js",
     publicPath: "/"
+  },
+  devServer: {
+    historyApiFallback: true
   },
   devtool: "source-map",
   resolve: {
@@ -70,11 +74,12 @@ module.exports = {
     HtmlWebpackPluginConfig,
     new webpack.NoEmitOnErrorsPlugin()
   ],
-  mode: "development",
+  mode: "production",
   externals: {
     // global app config object
     config: JSON.stringify({
-      apiUrl: "http://localhost:8000/api/v1"
+      apiUrl: "https://ry9c19b06b.execute-api.us-east-1.amazonaws.com/dev/api/v1"
+      // apiUrl: "http://localhost:8000/api/v1"
     })
   }
 };

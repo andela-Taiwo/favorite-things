@@ -51,7 +51,7 @@ export default function Navigation(props) {
           </Link>
         </Menu.Item>
         <Menu.Item key="2">
-          <Link to="/signup" className="btn btn-link">
+          <Link to="#" className="btn btn-link">
             Signup
           </Link>
         </Menu.Item>
