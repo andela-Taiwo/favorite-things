@@ -1,25 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { connect } from "react-redux";
-import {
-  Modal,
-  Form,
-  Layout,
-  Menu,
-  Icon,
-  Input,
-  Button,
-  Col
-} from "antd";
+import { Modal, Form, Layout, Menu, Icon, Input, Button, Col } from "antd";
 
 import "antd/dist/antd.css";
 
-import { FavoriteList } from "./FavoriteList";
 import { favoriteActions } from "../actions";
-
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
+import { hasErrors } from "../helpers/hasErrors";
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -34,11 +22,8 @@ class Sidebar extends React.Component {
       visible: false,
       confirmLoading: false
     };
-  }
-
-  componentDidMount() {
-    // To disabled submit button at the beginning.
-    this.props.form.validateFields();
+    this.signal = axios.CancelToken.source();
+    // this.controller = new AbortController();
   }
 
   showModal = () => {
@@ -47,17 +32,22 @@ class Sidebar extends React.Component {
     });
   };
 
+  componentWillUnmount() {
+    window.addEventListener("scroll", this.onScroll, false);
+  }
+
   handleChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
   handleSubmit = e => {
+    this.props.form.validateFields();
     e.preventDefault();
     this.setState({ submitted: true, confirmLoading: true });
     const { title, category, ranking, description } = this.state;
     const { dispatch } = this.props;
-   
+
     if (title && category && ranking) {
       dispatch(
         favoriteActions.addFavorite({
@@ -85,7 +75,7 @@ class Sidebar extends React.Component {
 
   render() {
     const { visible, confirmLoading, ModalText } = this.state;
-    const {TextArea} = Input
+    const { TextArea } = Input;
     const { creatingFavorite } = this.props;
     const {
       getFieldDecorator,
@@ -111,7 +101,7 @@ class Sidebar extends React.Component {
             <Sider>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={["1"]}
+                defaultSelectedKeys={["sub2"]}
                 defaultOpenKeys={["sub2"]}
                 style={{ height: "100%", borderRight: 0 }}
               >
@@ -124,19 +114,16 @@ class Sidebar extends React.Component {
                     </span>
                   }
                 >
-                  <Menu.Item key="5">
-                    <Link to="/" className="btn btn-link">
+                  <Menu.Item key="10">
+                    <Link to="#" className="btn btn-link">
                       Home
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key="6">
-                    <Link
-                      className="btn btn-link"
-                      onClick={this.showModal}
-                    >
+                  <Menu.Item key="11">
+                    <a className="btn btn-link" onClick={this.showModal}>
                       {" "}
                       +Add Favorite
-                    </Link>
+                    </a>
                     <Modal
                       title="Add a new favorite"
                       visible={visible}
@@ -188,7 +175,8 @@ class Sidebar extends React.Component {
                                   }
                                 ]
                               })(
-                                <TextArea rows={4} 
+                                <TextArea
+                                  rows={4}
                                   tyle={{ width: "100%" }}
                                   name="description"
                                   onChange={this.handleChange}
@@ -202,7 +190,6 @@ class Sidebar extends React.Component {
                                   min="10"
                                   placeholder="Description"
                                 />
-                                
                               )}
                             </Form.Item>
                             <Form.Item
@@ -274,42 +261,9 @@ class Sidebar extends React.Component {
                     </Modal>
                   </Menu.Item>
                 </SubMenu>
-                <SubMenu
-                  key="sub1"
-                  title={
-                    <span>
-                      <Icon type="user" />
-                      subnav 1
-                    </span>
-                  }
-                >
-                  <Menu.Item key="5">
-                    <Link to="/" className="btn btn-link">
-                      Home
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="2">option2</Menu.Item>
-                  <Menu.Item key="3">option3</Menu.Item>
-                  <Menu.Item key="4">
-                    <Link to="/login">Logout</Link>
-                  </Menu.Item>
-                </SubMenu>
-                <SubMenu
-                  key="sub3"
-                  title={
-                    <span>
-                      <Icon type="notification" />
-                      Notifications
-                    </span>
-                  }
-                >
-                  <Menu.Item key="9">option9</Menu.Item>
-                </SubMenu>
               </Menu>
             </Sider>
-            <Layout>
-              {this.props.children}
-            </Layout>
+            <Layout>{this.props.children}</Layout>
           </Layout>
         </Content>
       </Layout>
@@ -329,4 +283,4 @@ function mapStateToProps(state) {
 }
 
 const connectedPage = connect(mapStateToProps)(WrappedHorizontalFavoriteForm);
-export default connectedPage
+export default connectedPage;

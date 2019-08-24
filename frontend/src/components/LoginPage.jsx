@@ -48,7 +48,6 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { Content } = Layout;
     const {
       getFieldDecorator,
       getFieldsError,
@@ -58,69 +57,65 @@ class LoginPage extends React.Component {
     const email = isFieldTouched("email") && getFieldError("email");
     const password = isFieldTouched("password") && getFieldError("password");
     return (
-      <Layout>
-        <Content className="content" style={{ textAlign: "center" }}>
-          <Navigation props={this.state.loggedIn} />
-          <Col span={12} offset={6}>
-            <Form
-              layout="vertical"
-              onSubmit={this.handleSubmit}
-              name="form"
-              style={{ textAlign: "center", marginTop: "27%" }}
+      <div>
+        <Navigation props={this.state.loggedIn} />
+        <Layout className="form-layout">
+          <Form
+            layout="vertical"
+            onSubmit={this.handleSubmit}
+            name="form"
+            className="edit-form"
+            // style={{ textAlign: "center", marginTop: "40vh" }}
+          >
+            <h3>Login</h3>
+            <Form.Item validateStatus={email ? "error" : ""} help={email || ""}>
+              {getFieldDecorator("email", {
+                rules: [
+                  { required: true, message: "Please provide a valid email" }
+                ]
+              })(
+                <Input
+                  name="email"
+                  onChange={this.handleChange}
+                  type="email"
+                  style={{ color: "rgba(0,0,0,.25)", width: "30%" }}
+                  placeholder="Email"
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              validateStatus={password ? "error" : ""}
+              help={password || ""}
             >
-              <h3>Login</h3>
-              <Form.Item
-                validateStatus={email ? "error" : ""}
-                help={email || ""}
+              {getFieldDecorator("password", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please provide a valid password"
+                  }
+                ]
+              })(
+                <Input
+                  name="password"
+                  onChange={this.handleChange}
+                  type="password"
+                  style={{ color: "rgba(0,0,0,.25)", width: "30%" }}
+                  placeholder="Password"
+                />
+              )}
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
               >
-                {getFieldDecorator("email", {
-                  rules: [
-                    { required: true, message: "Please provide a valid email" }
-                  ]
-                })(
-                  <Input
-                    name="email"
-                    onChange={this.handleChange}
-                    type="email"
-                    style={{ color: "rgba(0,0,0,.25)", width: "30%" }}
-                    placeholder="Email"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item
-                validateStatus={password ? "error" : ""}
-                help={password || ""}
-              >
-                {getFieldDecorator("password", {
-                  rules: [
-                    {
-                      required: true,
-                      message: "Please provide a valid password"
-                    }
-                  ]
-                })(
-                  <Input
-                    name="password"
-                    onChange={this.handleChange}
-                    type="password"
-                    style={{ color: "rgba(0,0,0,.25)", width: "30%" }}
-                    placeholder="Password"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  disabled={hasErrors(getFieldsError())}
-                >
-                  Login
-                </Button>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Content>
-      </Layout>
+                Login
+              </Button>
+            </Form.Item>
+          </Form>
+        </Layout>
+      </div>
     );
   }
 }

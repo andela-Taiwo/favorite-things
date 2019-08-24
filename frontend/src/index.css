@@ -3,9 +3,7 @@ body{
     min-height: 600px;
 }
 
-.favorite-card{
-    margin-bottom: 10px;
-}
+
 
 /* .ant-menu-dark, .ant-menu-dark .ant-menu-sub,.ant-layout-header {
     background: rgb(230, 81, 0);
@@ -16,6 +14,27 @@ body{
 } */
 
 /* ========================Card details===============================*/
+body{
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f7f7f7;
+    background-image: url("./assets/trackit-min.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.overlay {
+    position:  fixed;
+    height:  100vh;
+    width:  100vw;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+    z-index:  -1;
+}
 .favorite-details{
     display: flex;
     justify-content: center;
@@ -23,8 +42,115 @@ body{
     align-items: center; 
     vertical-align:middle;
     margin-top: 20vh;
+    color: #fff;
+    margin-bottom: 40px;
+    padding: 20px;
+    font-size: 18px;
+}
+.message{
+text-align: center;
+display: flex;
+justify-content: center;
+justify-items: center;
+margin-top: 40vh;
+}
+.message h1{
+    font-size: 64px;
+    color: #f7f7f7
 }
 
+.slogan{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    justify-items: center;  
+}
+
+.slogan > h1{
+    color: #f7f7f7;
+}
+.favorite-details h1 h2, h3, p{
+    color: #fff;
+}
+
+.favorite-card{
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+.favorite-card  h2, h3, p {
+    color: rgba(0,0,0,0.7);
+}
+
+.favorite-details h2 {
+    font-size: 26px;
+    font-weight: bolder;
+}
+
+.favorite-details h3 {
+    font-size: 22px;
+}
+
+.gradient {
+    background-image:
+    linear-gradient(
+      to right, 
+      rgb(220, 225, 231), rgb(71, 162, 248)
+    );
+  }
+.gradient  Row {
+    margin-bottom: 15vh;
+    display: flex;
+}
+.card-footer{
+    display: flex;
+    justify-content: right;
+    margin-top: 20vh;
+    bottom: 0
+}
+
+/* ========================================404 Page===================================== */
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    padding: 25%;
+  }
+
+  .page-container  .title{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    color: #fff;
+    font-size: 64px;
+    font-weight: bolder;
+  }
+
+
+  /*  ======== ===============================================edit form ============================================== */
+
+  .edit-form{
+    display: block;
+    justify-content: center;
+    /* margin-left: 30vw; */
+    /* margin-top: 20vh; */
+  }
+  .edit-form h3{
+    font-size: 22px;
+    color: #1890FF;
+    font-weight: bolder;
+
+  }
+  .form-layout{
+    width: 40%;
+    margin-left: 30vw;
+    margin-top: 20vh;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start;
+    text-align: center;
+  }
 /*  ============================== Loader =============================  */
 @keyframes lds-facebook_1 {
     0% {

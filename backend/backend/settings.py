@@ -27,6 +27,11 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+DATABASES = {
+    'default': dj_database_url.config(
+      default = config('DATABASE_URL'))
+}
+
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -117,10 +122,7 @@ AUTH_USER_MODEL = 'favorite_things.User'
 #         'PORT': 5432,
 #     }
 # }
-DATABASES = {
-    'default': dj_database_url.config(
-      default = config('DATABASE_URL'))
-}
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 

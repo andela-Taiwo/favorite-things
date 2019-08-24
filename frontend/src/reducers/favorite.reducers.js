@@ -1,52 +1,73 @@
 import { favoriteConstants } from "../constants";
-export function favorites(state = {}, action) {
+
+const initialState = {
+  loading: true,
+  favorites: [],
+  favorite: {}
+};
+
+export function favorites(state = initialState, action) {
   switch (action.type) {
     case favoriteConstants.GETALL_REQUEST:
       return {
+        ...state,
         loading: true
       };
     case favoriteConstants.GETALL_SUCCESS:
       return {
+        ...state,
+        loading: false,
         favorites: action.favorites
       };
     case favoriteConstants.GETALL_FAILURE:
       return {
+        ...state,
         error: action.error
       };
     case favoriteConstants.ADD_FAVORITE_REQUEST:
       return {
-        proccessing: true
+        ...state
+        // loading: true
       };
     case favoriteConstants.ADD_FAVORITE__SUCCESS:
       return {
-        favorite: action.favorite
+        ...state,
+        favorite: action.favorite,
+        loading: true
       };
     case favoriteConstants.ADD_FAVORITE__FAILURE:
       return {
+        ...state,
         error: action.error
       };
     case favoriteConstants.UPDATE_FAVORITE_REQUEST:
       return {
-        proccessing: true
+        ...state,
+        loading: true
       };
     case favoriteConstants.UPDATE_FAVORITE__SUCCESS:
       return {
+        ...state,
         favorite: action.favorite
       };
     case favoriteConstants.UPDATE_FAVORITE__FAILURE:
       return {
+        ...state,
         error: action.error
       };
     case favoriteConstants.GET_FAVORITE_REQUEST:
       return {
-        proccessing: true
+        ...state,
       };
     case favoriteConstants.GET_FAVORITE__SUCCESS:
       return {
-        favorite: action.favorite
+        ...state,
+        favorite: action.favorite,
+        loading: false
       };
     case favoriteConstants.GET_FAVORITE__FAILURE:
       return {
+        ...state,
         error: action.error
       };
     case favoriteConstants.DELETE_FAVORITE_REQUEST:
@@ -60,6 +81,7 @@ export function favorites(state = {}, action) {
     case favoriteConstants.DELETE_FAVORITE_SUCCESS:
       // remove deleted favorite from state
       return {
+        ...state,
         favorites: state.favorites.filter(favorite => favorite.id !== action.id)
       };
     case favoriteConstants.DELETE_FAVORITE_FAILURE:

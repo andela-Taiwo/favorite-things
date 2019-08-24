@@ -5,7 +5,7 @@ import { favoriteActions } from "../actions";
 import { FavoriteCard } from "./FavoriteCard";
 import Navigation from "./Navigation";
 
-import LoadingContainer from './LoadingContainer'
+import LoadingContainer from "./LoadingContainer";
 import "antd/dist/antd.css";
 
 class FavoriteList extends React.Component {
@@ -25,20 +25,16 @@ class FavoriteList extends React.Component {
           style={{
             textAlign: "center",
             fontSize: "32px",
-            margin: "12px 0 12px 0"
+            margin: "12px 0 12px 0",
+            color: "#1890FF"
           }}
         >
-          {" "}
           All Favorites
         </h2>
-        {favorites.loading && <LoadingContainer backgroundColor="#000000"/>}
-        {favorites.error && (
-          <span className="text-danger">ERROR: {favorites.error}</span>
-        )}
-        {favorites.favorites && (
-          <FavoriteCard
-            props={favorites}
-          />
+        {favorites.loading ? (
+          <LoadingContainer backgroundColor="#000000" />
+        ) : (
+          favorites.favorites && <FavoriteCard props={favorites} />
         )}
       </div>
     );
@@ -46,7 +42,10 @@ class FavoriteList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { favorites, authentication: {loggedIn} } = state;
+  const {
+    favorites,
+    authentication: { loggedIn }
+  } = state;
   return {
     loggedIn,
     favorites
