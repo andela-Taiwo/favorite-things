@@ -20,9 +20,16 @@ Badges
 * - Update a favorite `PUT api/v1/favorite/{favorite_id}/`
 
 #### Yet to be implemented
+* - Complete signup flow
 * - Delete a favorite `DELETE api/v1/favorite/{favorite_id}/`
 * - Update user roles `PUT api/v1/user-roles/{user_id}/update/`
 * - Create roles  `POST api/v1/roles/`
+
+## Frontend Features 
+* - login
+* - Create a favorite
+*  - List all favorites
+* - Updating a favorite 
 
 
 ## Installation
@@ -35,8 +42,10 @@ It is recommended to use following directory structure:
 <favorite_things> (git clone to this)
 ```
 - `For environment variables follow the .env-sample or contact the developer`
+- 
 
-## Requirements and dependencies
+
+## Requirements and dependencies for Backend
 
 - Postgresql 10 (or above)
 - Python 3.6.x
@@ -65,7 +74,14 @@ Everytime you’ll want to call python code, you need to activate the environmen
 
 - `Favorite-Things-App`
 - `workon my_project`
-
+-  `cd backend`
+- ` activate a virtual environment`
+- `pip install -r requirements.txt`
+- `py manage.py migrate`
+- ` cd frontend  run npm install `
+- `start backend with "python manage.py runserver"`
+ `start frontend with "npm run server"`
+ 
 Then you can proceed with running the server (or other operations described below):
 
 To turn it off, simply stop the process in the command line.
@@ -77,6 +93,7 @@ To turn it off, simply stop the process in the command line.
 ## Updating
 - Optionally turn off the server. It might be needed in some cases when the changes are too complex. Otherwise the running server usually picks up the changes automatically and restarts itself.
 - `git pull`
+-  `cd backend`
 - `py manage.py migrate`
 - Turn server back on if you have turned it off with `python manage.py runserver`
 
