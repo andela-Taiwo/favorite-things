@@ -2,7 +2,8 @@
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-
+from django.contrib.postgres.fields import JSONField
+from django.db.models import constraints
 
 
 class UserManager(BaseUserManager):
@@ -49,22 +50,9 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['last_name', 'first_name']
     objects = UserManager()
-
+    
     class Meta:
         verbose_name_plural = "All Users"
-
-
-class ModelChangeLogsModel(models.Model):
-    user_id = models.BigIntegerField(null=False, blank=True, db_index=True) 
-    # table_name = models.CharField(max_length=132, null=False, blank=True)
-    # table_row = models.BigIntegerField(null=False, blank=True)
-    data = models.TextField(null=False, blank=True)
-    action = models.CharField(max_length=16, null=False, blank=True)  # saved or deleted
-    timestamp = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=True)
-
-    class Meta:
-        app_label = "favoite_things"
-        db_table = "model_change_logs"
 
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
@@ -88,6 +76,11 @@ class Favorite(models.Model):
 
     class Meta:
         verbose_name_plural = 'Favorites'
+        ordering = ['-created_at']
+        # unique_together = ['ranking','category']
+        # constraints = [
+        #     models.UniqueConstraint(fields=['ranking','category'], name='unique_category_ranking')
+        # ]
 
     def __str__(self):
         return "%s (%s)" % (
@@ -100,12 +93,31 @@ class Favorite(models.Model):
             item.ranking += 1
             item.save()
 
-    def validate_unique(self, exclude=None):
-        qs = Favorite.objects.filter(category=self.category, ranking=self.ranking, owner=self.owner)
-        if self.pk is None:   
-            if qs.exists():
-                self.update_category_ranking(category=self.category, owner=self.owner)
+    # def validate_unique(self, exclude=None):
+    #     qs = Favorite.objects.filter(category=self.category, ranking=self.ranking, owner=self.owner)
+    #     if self.pk is None:   
+    #         if qs.exists():
+    #             ranking = qs.first().ranking + 1
+    #             qs.update(ranking=ranking)
 
-    def save(self, *args, **kwargs):
-        self.validate_unique()
-        super(Favorite, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     while True:
+    #         qs = Favorite.objects.filter(category__name=self.category.name, ranking=self.ranking, owner=self.owner)
+    #         if qs.exists():
+    #             self.validate_unique()
+    #     super(Favorite, self).save(*args, **kwargs)
+
+class ModelChangeLogsModel(models.Model):
+    favorite = models.ForeignKey(Favorite, related_name="data_log", null=True, blank=True, db_index=True, on_delete=models.PROTECT) 
+    data = JSONField(null=False, blank=True)
+    action = models.CharField(max_length=16, null=False, blank=True)  # saved or deleted
+    timestamp = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=True)
+
+    class Meta:
+        app_label = "favorite_things"
+        db_table = "model_change_logs"
+        ordering = ['-timestamp']
+
+
+    def __unicode__(self):
+        return '%d: %s' % (self.data, self.timestamp)
