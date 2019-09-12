@@ -24,6 +24,17 @@ export function favorites(state = initialState, action) {
         ...state,
         error: action.error
       };
+    case favoriteConstants.GETALL_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        categories: action.categories
+      };
+    case favoriteConstants.GETALL_CATEGORY_FAILURE:
+      return {
+        ...state,
+        error: action.error
+      };
     case favoriteConstants.ADD_FAVORITE_REQUEST:
       return {
         ...state

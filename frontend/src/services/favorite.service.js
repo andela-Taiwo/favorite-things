@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   baseURL: `${config.apiUrl}`
 });
 
-function getAllFavorites() {
+function getAllFavorites(queryParams=[]) {
   const requestOptions = {
     method: "GET",
     headers: authHeader()
@@ -14,7 +14,7 @@ function getAllFavorites() {
   return axios
     .request({
       method: "get",
-      url: `${config.apiUrl}/favorite/`,
+      url: `${config.apiUrl}/favorite/?categories=${queryParams}`,
       mode: "no-cors",
       headers: authHeader()
     })
@@ -120,11 +120,37 @@ function updateFavorite(favoriteId, data) {
 }
 
 function deleteFavorite() {}
+function getCategories() {
+    return axios
+        .request({
+            method: "get",
+            url: `${config.apiUrl}/favorite/categories/`,
+            mode: "no-cors",
+            headers: authHeader()
+        })
+        .then(response => {
+            if (response.status !== 200) {
+                if (response.status === 401) {
+                    // auto logout if 401 response returned from api
+                    userService.logout();
+                    location.reload(true);
+                }
+                const data = response.statusText;
+                const error = (data && data.message) || response.statusText;
 
+                return Promise.reject(error);
+            }
+            return response.data.payload;
+        })
+        .catch(error => {
+            return error;
+        });
+}
 export const favoriteService = {
   getAllFavorites,
   createFavorite,
   updateFavorite,
   deleteFavorite,
-  getFavorite
+  getFavorite,
+  getCategories,
 };

@@ -7,17 +7,26 @@ import Navigation from "./Navigation";
 
 import LoadingContainer from "./LoadingContainer";
 import "antd/dist/antd.css";
-
+import {Select} from 'antd'
 class FavoriteList extends React.Component {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
+    this.props.dispatch(favoriteActions.getAllCategories())
     this.props.dispatch(favoriteActions.getAllFavorites());
-  }
 
+  }
+  handleChange = (value) => {
+      this.props.dispatch(favoriteActions.getAllFavorites(value));
+      console.log(value)
+  }
   render() {
-    const { favorites, loggedIn } = this.props;
+    const { Option } = Select;
+    const { favorites: {favorites, categories, loading}, loggedIn } = this.props;
+    const children = categories && categories.map((category) => {
+        return <Option  key={category.id}>{category.name}</Option>
+    } )
     return (
       <div className="favoritesList">
         <Navigation props={loggedIn} />
@@ -31,10 +40,19 @@ class FavoriteList extends React.Component {
         >
           All Favorites
         </h2>
-        {favorites.loading ? (
+          <Select
+              mode="multiple"
+              style={{ width: '100%' }}
+              placeholder="Please select"
+              onChange={this.handleChange}
+          >
+              {children}
+          </Select>
+
+        {loading ? (
           <LoadingContainer backgroundColor="#000000" />
         ) : (
-          favorites.favorites && <FavoriteCard props={favorites} />
+            favorites.length > 0 && <FavoriteCard props={favorites} />
         )}
       </div>
     );

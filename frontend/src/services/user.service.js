@@ -28,7 +28,7 @@ function login(email, password) {
       return response.data.user;
     })
     .catch(error => {
-      return Promise.reject(error.response.data.non_field_errors);
+     return  handleResponse(error)
     });
 }
 
@@ -76,21 +76,15 @@ function update(user) {
   );
 }
 
-function handleResponse(response) {
-  return response.text().then(text => {
-    const data = text && JSON.parse(text);
-    if (!response.ok) {
-      if (response.status === 401) {
-        // auto logout if 401 response returned from api
-        logout();
-        location.reload(true);
+function handleResponse(error) {
+    const data = error.response.data
+    if (!error.response.ok) {
+      if (error.response.status === 401) {
+        return Promise.reject(error.response.data.detail);
       }
 
-      const error = (data && data.message) || response.statusText;
-
-      return Promise.reject(error);
+      return Promise.reject(error.response.data.non_field_errors);
     }
 
     return data;
-  });
 }

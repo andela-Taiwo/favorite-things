@@ -128,7 +128,7 @@ AUTH_USER_MODEL = 'favorite_things.User'
 #         'PORT': 5432,
 #     }
 # }
-
+#
 DATABASES = {
     'default': dj_database_url.config(
       default = config('DATABASE_URL'))
@@ -158,6 +158,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 25,
+    # 'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'COERCE_DECIMAL_TO_STRING': False,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),

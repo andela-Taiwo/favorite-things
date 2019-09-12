@@ -13,14 +13,15 @@ from rest_framework import (
 )
 import favorite_things.services as favorite_services
 from .response import FavoriteAPIResponse
-from .serializers import FavoriteSerializer
+from .serializers import (FavoriteSerializer, CategorySerializer)
+
 
 class FavoriteViewSet(viewsets.ViewSet):
 
     permission_classes = [IsAuthenticated]
 
     def list(self, request, **kwargs):
-        user_fvorites = favorite_services.list_favorites(requestor=request.user)
+        user_fvorites = favorite_services.list_favorites(requestor=request.user, query_params=request.query_params)
         return FavoriteAPIResponse(FavoriteSerializer(user_fvorites, many=True).data)
 
     def retrieve(self, request, **kwargs):
@@ -36,5 +37,8 @@ class FavoriteViewSet(viewsets.ViewSet):
     def create(self, request, **kwargs):
         user_favorite = favorite_services.add_favorite(requestor=request.user, data=request.data)
         return FavoriteAPIResponse(FavoriteSerializer(user_favorite, many=True).data)
-        
 
+    @decorators.action(methods=['get'], detail=False, url_path='categories')
+    def list_categories(self, request, **kwargs):
+        categories = favorite_services.list_favorites_categories()
+        return FavoriteAPIResponse(CategorySerializer(categories, many=True).data)
