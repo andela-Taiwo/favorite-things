@@ -3,7 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.postgres.fields import JSONField
-from django.db.models import constraints
+# from django.db.models import constraints
 
 
 class UserManager(BaseUserManager):
@@ -54,6 +54,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name_plural = "All Users"
 
+
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
     category_description = models.CharField(max_length=250)
@@ -64,6 +65,7 @@ class Category(models.Model):
 
     def __str__(self):
         return "%s" % self.name
+
 
 class Favorite(models.Model):
     title = models.CharField(max_length=250)
@@ -107,6 +109,7 @@ class Favorite(models.Model):
     #             self.validate_unique()
     #     super(Favorite, self).save(*args, **kwargs)
 
+
 class ModelChangeLogsModel(models.Model):
     favorite = models.ForeignKey(Favorite, related_name="data_log", null=True, blank=True, db_index=True, on_delete=models.PROTECT) 
     data = JSONField(null=False, blank=True)
@@ -118,6 +121,5 @@ class ModelChangeLogsModel(models.Model):
         db_table = "model_change_logs"
         ordering = ['-timestamp']
 
-
-    def __unicode__(self):
-        return '%d: %s' % (self.data, self.timestamp)
+    # def __unicode__(self):
+    #     return '%d: %s' % (self.data, self.timestamp)

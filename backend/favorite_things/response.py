@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 
+
 class FavoriteAPIResponse(Response):
 
     def __init__(self, data=None, status=None,

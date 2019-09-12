@@ -8,14 +8,15 @@ export const favoriteActions = {
   addFavorite,
   updateFavorite,
   retrieveFavorite,
-  deleteFavorite
+  deleteFavorite,
+  getAllCategories
 };
 
-function getAllFavorites() {
+function getAllFavorites(queryParams=[]) {
   return dispatch => {
     dispatch(request());
 
-    favoriteService.getAllFavorites().then(
+    favoriteService.getAllFavorites(queryParams).then(
       favorites => {
         dispatch(success(favorites));
       },
@@ -113,6 +114,32 @@ function retrieveFavorite(favoriteId) {
   }
   function failure(error) {
     return { type: favoriteConstants.GET_FAVORITE__FAILURE, error };
+  }
+}
+
+function getAllCategories() {
+  return dispatch => {
+    dispatch(request());
+
+    favoriteService.getCategories().then(
+        categories => {
+          dispatch(success(categories));
+        },
+        error => {
+          dispatch(failure(error.toString()));
+          dispatch(alertActions.error(error.toString()));
+        }
+    );
+  };
+
+  function request() {
+    return { type: favoriteConstants.GETALL_REQUEST };
+  }
+  function success(categories) {
+    return { type: favoriteConstants.GETALL_CATEGORY_SUCCESS, categories };
+  }
+  function failure(error) {
+    return { type: favoriteConstants.GETALL_CATEGORY_FAILURE, error };
   }
 }
 

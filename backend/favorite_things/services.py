@@ -1,13 +1,9 @@
-import pytz
-import json
-import random
 from datetime import datetime, timedelta
 from rest_framework.generics import get_object_or_404
-from django.db.models import Q
 from rest_framework.exceptions import APIException
 from rest_framework import exceptions
 from .models import (
-    Favorite, Category, User, ModelChangeLogsModel
+    Favorite, Category
 )
 from django.db import (
     transaction,
@@ -18,6 +14,21 @@ from .serializers import (
     CreateFavoriteSerializer, FavoriteSerializer
 )
 
+def split_choices_int(choices):
+    assert(isinstance(choices, list))
+    include = []
+    exclude = []
+    for t in choices:
+        try:
+            t = int(t)
+            if t < 0:
+                exclude.append(-t)
+            else:
+                include.append(t)
+        except:
+            pass
+
+    return include, exclude
 
 def deserialize_favorite(*, action='create', data, serializer_class, favorite, requestor):
     ''' deserialize a favorite before creating or updating'''
@@ -64,12 +75,35 @@ def add_favorite(requestor, data):
             favorites.append(favorite)
     return favorites
 
-def list_favorites(requestor):
-    return Favorite.objects.filter(owner=requestor).order_by('ranking')
+def list_favorites(requestor, query_params):
+
+    queryset = Favorite.objects.filter(owner=requestor).order_by('ranking')
+    filter = {}
+    if 'categories' in query_params:
+        categories = query_params.getlist('categories')
+        if len(categories) > 0:
+            cat = categories[0]
+            categories = cat.split(',')
+        if isinstance(categories, list):
+            filter['categories'] = categories
+        elif isinstance(categories, int):
+            filter['categories'] = [categories]
+        else:
+            raise APIException.NotAcceptable()
+
+    if 'categories' in filter:
+        favorites_categories = filter['categories']
+
+        include, exclude = split_choices_int(favorites_categories)
+        if len(include) != 0:
+            queryset = queryset.filter(category__pk__in=include)
+
+        if len(exclude) != 0:
+            queryset = queryset.exclude(category__pk__in=exclude)
+    return queryset
 
 def retrieve_favorite(requestor, favorite_id):
     favorite = get_object_or_404(Favorite, id=favorite_id)
-    # history = ModelChangeLogsModel.objectfilter(user_id=requestor.id).all()
 
     if favorite.owner == requestor:
         return favorite
@@ -92,3 +126,6 @@ def update_favorite(requestor, data, favorite_id):
         with transaction.atomic():
             serializer.save()
         return serializer.data
+
+def list_favorites_categories():
+    return Category.objects.all().order_by('-created_at')
