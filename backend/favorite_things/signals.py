@@ -12,21 +12,21 @@ def audit_log(sender, instance, **kwargs):
         query_kwargs = dict()
         query_kwargs[table_pk] = table_pk_value
         prev_instance = sender.objects.get(**query_kwargs) # for dynamic column nam
-        
+
     except models.ObjectDoesNotExist as e:
         return
-
-    query_sets = Favorite.objects.filter(ranking=instance.ranking, category__name=instance.category.name).order_by('-created_at')
-    if query_sets.exists():
+    finally:
+        query_sets = Favorite.objects.filter(ranking=instance.ranking, category__name=instance.category.name).order_by('-created_at')
         ranking = instance.ranking
-        for qs in query_sets:
-            ranking += 1
-            qs.ranking = ranking
-            qs.save()
+        if query_sets.exists():
+            for qs in query_sets:
+                ranking += 1
+                qs.ranking = ranking
+                qs.save()
 
     fields = instance._meta.get_fields()
     fields = [field.name for field in fields]
-    modified_fields = { field : getattr(instance, field) for field in fields if getattr(prev_instance, field) != getattr(instance, field)}
+    modified_fields = {field : getattr(instance, field) for field in fields if getattr(prev_instance, field) != getattr(instance, field)}
     category = modified_fields.pop('category') if modified_fields.get('category') is not None else None
     if category is not None:
         modified_fields['category'] = category.name
@@ -34,10 +34,4 @@ def audit_log(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Favorite)
 def increment_rank(sender, instance, **kwargs):
-    query_set = Favorite.objects.filter(ranking=instance.ranking, category__name=instance.category.name).order_by('-created_at')
-    if(query_set.count() > 1):
-        ranking = instance.ranking 
-        for qs in query_set:
-            qs.ranking = ranking
-            qs.save()
-            ranking += 1
+    pass
