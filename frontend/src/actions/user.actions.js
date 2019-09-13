@@ -13,12 +13,10 @@ function login(email, password) {
         history.push("/favorite");
       },
       error => {
-        // console.log(error, '$$$$$$$$$$$$$$$$$$$$')
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
       }
     )
-  // .catch(error => console.log(error, 'gggggggg'));
   };
 
   function request(user) {

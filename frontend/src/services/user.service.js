@@ -77,7 +77,7 @@ function update(user) {
 }
 
 function handleResponse(error) {
-    const data = error.response.data
+    const data = error.response.data;
     if (!error.response.ok) {
       if (error.response.status === 401) {
         return Promise.reject(error.response.data.detail);

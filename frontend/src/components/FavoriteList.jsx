@@ -13,20 +13,19 @@ class FavoriteList extends React.Component {
     super(props);
   }
   componentDidMount() {
-    this.props.dispatch(favoriteActions.getAllCategories())
+    this.props.dispatch(favoriteActions.getAllCategories());
     this.props.dispatch(favoriteActions.getAllFavorites());
 
   }
   handleChange = (value) => {
       this.props.dispatch(favoriteActions.getAllFavorites(value));
-      console.log(value)
-  }
+  };
   render() {
     const { Option } = Select;
     const { favorites: {favorites, categories, loading}, loggedIn } = this.props;
     const children = categories && categories.map((category) => {
         return <Option  key={category.id}>{category.name}</Option>
-    } )
+    } );
     return (
       <div className="favoritesList">
         <Navigation props={loggedIn} />

@@ -79,10 +79,6 @@ class Favorite(models.Model):
     class Meta:
         verbose_name_plural = 'Favorites'
         ordering = ['-created_at']
-        # unique_together = ['ranking','category']
-        # constraints = [
-        #     models.UniqueConstraint(fields=['ranking','category'], name='unique_category_ranking')
-        # ]
 
     def __str__(self):
         return "%s (%s)" % (
@@ -95,19 +91,7 @@ class Favorite(models.Model):
             item.ranking += 1
             item.save()
 
-    # def validate_unique(self, exclude=None):
-    #     qs = Favorite.objects.filter(category=self.category, ranking=self.ranking, owner=self.owner)
-    #     if self.pk is None:   
-    #         if qs.exists():
-    #             ranking = qs.first().ranking + 1
-    #             qs.update(ranking=ranking)
 
-    # def save(self, *args, **kwargs):
-    #     while True:
-    #         qs = Favorite.objects.filter(category__name=self.category.name, ranking=self.ranking, owner=self.owner)
-    #         if qs.exists():
-    #             self.validate_unique()
-    #     super(Favorite, self).save(*args, **kwargs)
 
 
 class ModelChangeLogsModel(models.Model):
@@ -120,6 +104,3 @@ class ModelChangeLogsModel(models.Model):
         app_label = "favorite_things"
         db_table = "model_change_logs"
         ordering = ['-timestamp']
-
-    # def __unicode__(self):
-    #     return '%d: %s' % (self.data, self.timestamp)

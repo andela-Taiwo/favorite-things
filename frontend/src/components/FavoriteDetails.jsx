@@ -17,6 +17,7 @@ class FavoriteDetails extends React.Component {
   constructor(props) {
     super(props);
   }
+
   componentDidMount() {
     const {
       dispatch,
