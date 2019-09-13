@@ -108,7 +108,7 @@ class TestFavoriteAPI(APITestCase):
         response_data = response.data['payload']
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_data['title'], 'new favorite title')
-        self.assertEqual(response_data['category']['name'], self.favorite.category.name)
+        self.assertEqual(response_data['category'], self.favorite.category.pk)
     
     def test_ranking_reordered_when_new_favorite_with_same_rank_added(self):
         token = self._login_user(email='testuser@gmail.com', password='v3yhdd')

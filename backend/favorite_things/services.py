@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta
 from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import APIException
-from rest_framework import exceptions
+
+from .helpers import split_choices_int
 from .models import (
     Favorite, Category
 )
@@ -14,21 +14,6 @@ from .serializers import (
     CreateFavoriteSerializer, FavoriteSerializer
 )
 
-def split_choices_int(choices):
-    assert(isinstance(choices, list))
-    include = []
-    exclude = []
-    for t in choices:
-        try:
-            t = int(t)
-            if t < 0:
-                exclude.append(-t)
-            else:
-                include.append(t)
-        except:
-            pass
-
-    return include, exclude
 
 def deserialize_favorite(*, action='create', data, serializer_class, favorite, requestor):
     ''' deserialize a favorite before creating or updating'''

@@ -17,7 +17,8 @@ export class FavoriteCard extends React.Component {
           minValue: (value - 1) * 12,
           maxValue: value * 12
       });
-  }
+  };
+  
   render() {
     const favorites =
       (this.props &&

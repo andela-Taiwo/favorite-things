@@ -6,7 +6,6 @@ from .models import Favorite, ModelChangeLogsModel
 
 @receiver(pre_save, sender=Favorite)
 def audit_log(sender, instance, **kwargs):
-    print("Inside signal code")
     try:
         table_pk = instance._meta.pk.name
         table_pk_value = instance.__dict__[table_pk]
@@ -24,7 +23,6 @@ def audit_log(sender, instance, **kwargs):
             ranking += 1
             qs.ranking = ranking
             qs.save()
-            
 
     fields = instance._meta.get_fields()
     fields = [field.name for field in fields]
