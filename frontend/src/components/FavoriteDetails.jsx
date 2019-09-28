@@ -1,9 +1,7 @@
-import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { favoriteActions } from "../actions";
-import Navigation from "./Navigation";
 import { Row, Col, Card, Layout } from "antd";
 import LoadingContainer from "./LoadingContainer";
 import "antd/dist/antd.css";
@@ -98,7 +96,6 @@ class FavoriteDetails extends React.Component {
     ) : (
       <Layout>
         <div className="details">
-          <Navigation props={loggedIn} />
           <div className="favorite-details">
             <Row key={favorite.id}>
               <Col>
@@ -169,7 +166,9 @@ class FavoriteDetails extends React.Component {
                         <Col>
                           <h4>Created </h4>
                         </Col>
-                        <Col offset={2}>{favorite.created_at}</Col>
+                        <Col className="date-created" offset={3}>
+                          {favorite.created_at}
+                        </Col>
                       </Row>
                     </footer>
                     <br />

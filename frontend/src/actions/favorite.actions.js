@@ -12,7 +12,7 @@ export const favoriteActions = {
   getAllCategories
 };
 
-function getAllFavorites(queryParams=[]) {
+function getAllFavorites(queryParams = []) {
   return dispatch => {
     dispatch(request());
 
@@ -122,13 +122,13 @@ function getAllCategories() {
     dispatch(request());
 
     favoriteService.getCategories().then(
-        categories => {
-          dispatch(success(categories));
-        },
-        error => {
-          dispatch(failure(error.toString()));
-          dispatch(alertActions.error(error.toString()));
-        }
+      categories => {
+        dispatch(success(categories));
+      },
+      error => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
     );
   };
 

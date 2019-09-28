@@ -3,11 +3,10 @@ import { connect } from "react-redux";
 
 import { favoriteActions } from "../actions";
 import { FavoriteCard } from "./FavoriteCard";
-import Navigation from "./Navigation";
 
 import LoadingContainer from "./LoadingContainer";
 import "antd/dist/antd.css";
-import {Select} from 'antd'
+import { Select } from "antd";
 class FavoriteList extends React.Component {
   constructor(props) {
     super(props);
@@ -15,20 +14,23 @@ class FavoriteList extends React.Component {
   componentDidMount() {
     this.props.dispatch(favoriteActions.getAllCategories());
     this.props.dispatch(favoriteActions.getAllFavorites());
-
   }
-  handleChange = (value) => {
-      this.props.dispatch(favoriteActions.getAllFavorites(value));
+  handleChange = value => {
+    this.props.dispatch(favoriteActions.getAllFavorites(value));
   };
   render() {
     const { Option } = Select;
-    const { favorites: {favorites, categories, loading}, loggedIn } = this.props;
-    const children = categories && categories.map((category) => {
-        return <Option  key={category.id}>{category.name}</Option>
-    } );
+    const {
+      favorites: { favorites, categories, loading },
+      loggedIn
+    } = this.props;
+    const children =
+      categories &&
+      categories.map(category => {
+        return <Option key={category.id}>{category.name}</Option>;
+      });
     return (
       <div className="favoritesList">
-        <Navigation props={loggedIn} />
         <h2
           style={{
             textAlign: "center",
@@ -39,19 +41,19 @@ class FavoriteList extends React.Component {
         >
           All Favorites
         </h2>
-          <Select
-              mode="multiple"
-              style={{ width: '100%' }}
-              placeholder="Please select"
-              onChange={this.handleChange}
-          >
-              {children}
-          </Select>
+        <Select
+          mode="multiple"
+          style={{ width: "100%" }}
+          placeholder="Please select"
+          onChange={this.handleChange}
+        >
+          {children}
+        </Select>
 
         {loading ? (
           <LoadingContainer backgroundColor="#000000" />
         ) : (
-            favorites.length > 0 && <FavoriteCard props={favorites} />
+          favorites.length > 0 && <FavoriteCard props={favorites} />
         )}
       </div>
     );

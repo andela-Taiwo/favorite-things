@@ -1,6 +1,6 @@
 import config from "config";
 import { authHeader } from "../helpers";
-import axios from "axios"
+import axios from "axios";
 
 export const userService = {
   login,
@@ -28,7 +28,7 @@ function login(email, password) {
       return response.data.user;
     })
     .catch(error => {
-     return  handleResponse(error)
+      return handleResponse(error);
     });
 }
 
@@ -60,7 +60,7 @@ function register(user) {
       return response.data.payload;
     })
     .catch(error => {
-      return Promise.reject(JSON.stringify(error.response.data));
+      return handleResponse(error);
     });
 }
 
@@ -77,14 +77,14 @@ function update(user) {
 }
 
 function handleResponse(error) {
-    const data = error.response.data;
-    if (!error.response.ok) {
-      if (error.response.status === 401) {
-        return Promise.reject(error.response.data.detail);
-      }
-
-      return Promise.reject(error.response.data.non_field_errors);
+  const data = error.response.data;
+  if (!error.response.ok) {
+    if (error.response.status === 401) {
+      return Promise.reject(error.response.data.detail);
     }
 
-    return data;
+    return Promise.reject(error.response.data.non_field_errors);
+  }
+
+  return data;
 }

@@ -41,11 +41,14 @@ body{
     min-height: 400px;
     align-items: center; 
     vertical-align:middle;
-    margin-top: 20vh;
+    margin-top: 15vh;
     color: #fff;
     margin-bottom: 40px;
     padding: 20px;
     font-size: 18px;
+}
+.ant-col, .ant-col-offset-6, .date-created{
+    min-width: 200px;
 }
 .message{
 text-align: center;

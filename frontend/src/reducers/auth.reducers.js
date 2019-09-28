@@ -11,12 +11,12 @@ export function setToken(state = tokenInitialState, action) {
 }
 
 let user = localStorage.getItem("user");
-const initialState = user ? { loggedIn: true, user } : {};
+const initialState = user ? { loggedIn: false, user, loading: false } : {};
 export function authentication(state = initialState, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
-        loggingIn: true,
+        loading: true,
         user: action.user
       };
     case userConstants.LOGIN_SUCCESS:
@@ -28,6 +28,19 @@ export function authentication(state = initialState, action) {
       return {
         error: action.error
       };
+
+    case userConstants.SIGNUP_REQUEST:
+      return {
+        loading: true,
+      };
+    case userConstants.SIGNUP_SUCCESS:
+      return {
+        loading: false,
+      };
+    case userConstants.SIGNUP_FAILURE:
+      return  {
+        error: action.error
+      }
     case userConstants.LOGOUT:
       return {};
     default:

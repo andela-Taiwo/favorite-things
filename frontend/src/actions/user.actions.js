@@ -16,7 +16,7 @@ function login(email, password) {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
       }
-    )
+    );
   };
 
   function request(user) {
