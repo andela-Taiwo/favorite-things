@@ -11,6 +11,7 @@ import FavoriteDetails from "../components/FavoriteDetails";
 import FavoriteEditPage from "../components/FavoriteEditPage";
 import { Alert } from "antd";
 import "antd/dist/antd.css";
+import Navigation from "../components/Navigation";
 
 class App extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class App extends React.Component {
               />
             )}
             <Router history={history}>
+              <Navigation />
               <Switch>
                 <Route exact path="/" component={HomePage} />
 

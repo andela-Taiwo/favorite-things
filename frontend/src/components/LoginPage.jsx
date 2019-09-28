@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Form, Layout, Input, Button, Col } from "antd";
 import "antd/dist/antd.css";
 import { userActions } from "../actions";
-import Navigation from "./Navigation";
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -58,14 +57,12 @@ class LoginPage extends React.Component {
     const password = isFieldTouched("password") && getFieldError("password");
     return (
       <div>
-        <Navigation props={this.state.loggedIn} />
         <Layout className="form-layout">
           <Form
             layout="vertical"
             onSubmit={this.handleSubmit}
             name="form"
             className="edit-form"
-            // style={{ textAlign: "center", marginTop: "40vh" }}
           >
             <h3>Login</h3>
             <Form.Item validateStatus={email ? "error" : ""} help={email || ""}>

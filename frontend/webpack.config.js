@@ -78,8 +78,8 @@ module.exports = {
   externals: {
     // global app config object
     config: JSON.stringify({
-      apiUrl: "https://ry9c19b06b.execute-api.us-east-1.amazonaws.com/dev/api/v1"
-      // apiUrl: "http://localhost:8000/api/v1"
+      // apiUrl: "https://ry9c19b06b.execute-api.us-east-1.amazonaws.com/dev/api/v1"
+      apiUrl: "http://localhost:8000/api/v1"
     })
   }
 };

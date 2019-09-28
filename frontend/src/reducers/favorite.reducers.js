@@ -68,7 +68,7 @@ export function favorites(state = initialState, action) {
       };
     case favoriteConstants.GET_FAVORITE_REQUEST:
       return {
-        ...state,
+        ...state
       };
     case favoriteConstants.GET_FAVORITE__SUCCESS:
       return {

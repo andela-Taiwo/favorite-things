@@ -2,18 +2,14 @@ import React from "react";
 
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import Navigation from "./Navigation";
 
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    const { loggedIn } = this.props;
     return (
       <div>
-        <Navigation props={loggedIn} />
-
         <div className="message">
           <h1>Welcome to trackT</h1>
           <br />
